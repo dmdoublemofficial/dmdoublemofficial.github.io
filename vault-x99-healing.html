@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM Double M | The Vault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #d4af37; --dark: #0a0a0a; --white: #f4f4f4; }
+        body { background: var(--dark); color: var(--white); font-family: 'Montserrat', sans-serif; text-align: center; padding: 40px 20px; }
+        
+        /* Lock Screen Styles */
+        .lock-container { padding: 60px 20px; border: 1px solid var(--gold); border-radius: 20px; max-width: 400px; margin: 50px auto; }
+        input { padding: 12px; border-radius: 5px; border: none; width: 80%; margin-bottom: 10px; text-align: center; background: #222; color: white; }
+        .unlock-btn { background: var(--gold); border: none; padding: 12px 30px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .unlock-btn:hover { background: white; }
+
+        .content-hidden { display: none; } /* Content is hidden until unlocked */
+
+        /* Vault Styles */
+        .vault-card { background: #161616; border: 1px solid #333; border-radius: 20px; padding: 30px; max-width: 600px; margin: 0 auto; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+        .thank-you-gif { width: 120px; border-radius: 15px; margin-bottom: 20px; }
+        h1 { color: var(--gold); margin-bottom: 10px; }
+        
+        .player-box { margin-bottom: 30px; border: 1px solid #333; border-radius: 15px; overflow: hidden; background: #000; }
+        .player-header { background: #1a1a1a; padding: 10px; font-size: 0.8rem; color: var(--gold); font-weight: bold; }
+        
+        .fan-wall { margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px; border: 1px solid #333; }
+        .fan-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; }
+        .fan-name { background: #222; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #444; }
+    </style>
+</head>
+<body>
+
+    <div id="lockScreen" class="lock-container">
+        <h2 style="color:var(--gold);">🔐 THE VAULT</h2>
+        <p style="font-size: 0.8rem; margin-bottom: 20px;">Support Manasse with 300 FRW to get the Secret Password.</p>
+        <input type="password" id="passCode" placeholder="Enter Secret Code">
+        <br>
+        <button class="unlock-btn" onclick="checkPass()">UNLOCK NOW</button>
+        <p style="font-size: 0.7rem; color: #555; margin-top: 15px;">Sharing this code is strictly prohibited.</p>
+    </div>
+
+    <div id="vaultContent" class="content-hidden">
+        <div class="vault-card">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4bmZ4/MDJ9uLGiTLvS8/giphy.gif" alt="Happy Cat" class="thank-you-gif">
+            <h1>You're officially a Healer!</h1>
+            <p style="font-style: italic; color: #bbb; margin-bottom: 30px;">"Thank you for the 300 FRW. Your support fuels my music and my MBBS journey." — Manasse</p>
+
+            <div class="player-box">
+                <div class="player-header">🎧 UNRELEASED AUDIO (Streaming Only)</div>
+                <p style="padding: 20px; font-size: 0.8rem;">[Audio Track Loading...]</p>
+            </div>
+
+            <div class="player-box">
+                <div class="player-header">🎬 EXCLUSIVE FILM BTS (Streaming Only)</div>
+                <p style="padding: 20px; font-size: 0.8rem;">[Video Content Loading...]</p>
+            </div>
+
+            <div class="fan-wall">
+                <h3 style="color:var(--gold); font-size: 0.9rem; letter-spacing: 2px;">✨ WALL OF HEALERS ✨</h3>
+                <div class="fan-list">
+                    <span class="fan-name">Florence N.</span>
+                    <span class="fan-name">DM Double M Fans</span>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkPass() {
+            var pass = document.getElementById("passCode").value;
+            // THIS IS YOUR PASSWORD. YOU CAN CHANGE THIS ANYTIME.
+            if(pass === "healing2026") {
+                document.getElementById("lockScreen").style.display = "none";
+                document.getElementById("vaultContent").style.display = "block";
+            } else {
+                alert("Incorrect password. Please message Manasse on WhatsApp for the correct code.");
+            }
+        }
+    </script>
+</body>
+</html>
