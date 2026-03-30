@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM DOUBLE M | Watch Room</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #0a0a0a; color: #f4f4f4; font-family: 'Montserrat', sans-serif; text-align: center; padding: 40px 20px; }
+        .lock-container { border: 1px solid #d4af37; border-radius: 20px; max-width: 400px; margin: 60px auto; padding: 40px 20px; }
+        input { padding: 15px; width: 80%; border: none; border-radius: 8px; background: #222; color: white; margin-bottom: 15px; text-align: center; font-size: 1.1rem; }
+        .unlock-btn { background: #d4af37; border: none; padding: 15px 40px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .hidden-content { display: none; max-width: 600px; margin: 0 auto; }
+        .cat-gif { width: 150px; border-radius: 15px; margin-bottom: 20px; }
+        .player { background: #111; border: 1px solid #333; border-radius: 15px; padding: 20px; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+    <div id="lockScreen" class="lock-container">
+        <h2 style="color:#d4af37;">WATCH ROOM</h2>
+        <p style="font-size: 0.8rem; color: #888;">Enter your unique 48-hour password.</p>
+        <input type="password" id="passCode" placeholder="Enter Code">
+        <br>
+        <button class="unlock-btn" onclick="check()">UNLOCK</button>
+    </div>
+
+    <div id="mainContent" class="hidden-content">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjR2ZjQ5enJ2eXN5bm1oZzFvYWJqaTVreGx5dm1pMXM4emx6cjRkbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MDJ9uLGiTLvS8/giphy.gif" class="cat-gif">
+        <p style="font-style: italic;">"Respect for the 200 FRW. This helps me keep the music coming. Enjoy the exclusives." — Manasse</p>
+
+        <div class="player">
+            <h4 style="color:#d4af37;">EXCLUSIVE MUSIC (AUDIO)</h4>
+            <p style="color:#555;">[Audio Player Placeholder]</p>
+        </div>
+
+        <div class="player">
+            <h4 style="color:#d4af37;">EXCLUSIVE MUSIC (VIDEO)</h4>
+            <p style="color:#555;">[Video Player Placeholder]</p>
+        </div>
+    </div>
+
+    <script>
+        function check() {
+            var p = document.getElementById("passCode").value;
+            if(p === "healing2026") {
+                document.getElementById("lockScreen").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+            } else { alert("Incorrect Code"); }
+        }
+    </script>
+</body>
+</html>
