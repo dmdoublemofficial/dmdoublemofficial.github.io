@@ -3,77 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DM DOUBLE M | Watch Room</title>
+    <title>DM DOUBLE M | Official</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #d4af37; --bg: #1a1a1a; --card: #252525; }
-        body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
+        :root { --gold: #d4af37; --bg: #2a2a2a; --card: #333333; --white: #ffffff; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--white); margin: 0; text-align: center; }
         
-        /* Lock Screen */
-        .lock { padding: 100px 20px; transition: 0.5s; }
-        input { padding: 15px; border-radius: 10px; border: 1px solid #444; width: 250px; font-size: 1.2rem; text-align: center; background: #111; color: white; }
-        .unlock-btn { background: var(--gold); padding: 15px 40px; border-radius: 10px; font-weight: bold; border: none; margin-top: 20px; cursor: pointer; color: black; }
+        /* Navigation Menu */
+        .menu-btn { position: fixed; top: 20px; right: 20px; font-size: 35px; cursor: pointer; color: var(--gold); z-index: 1001; }
+        .nav-overlay { height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; right: 0; background-color: rgba(42,42,42, 0.98); overflow-x: hidden; transition: 0.5s; border-left: 2px solid var(--gold); }
+        .nav-content { position: relative; top: 15%; width: 100%; text-align: center; }
+        .nav-content a { padding: 15px; text-decoration: none; font-size: 1.5rem; color: var(--white); display: block; }
+        .nav-content h3 { color: var(--gold); margin-top: 30px; font-size: 0.9rem; letter-spacing: 2px; }
 
-        /* The Content Area */
-        #celebration { display: none; padding: 40px 20px; position: relative; z-index: 10; animation: fadeIn 1s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .hero { padding: 60px 20px; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://i.imgur.com/2zS4NhT.jpeg'); background-size: cover; background-position: center; }
+        .profile-img { width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
-        .player-box { background: var(--card); max-width: 700px; margin: 30px auto; padding: 20px; border-radius: 20px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; background: #000; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        /* Professional Social Icons */
+        .icon-row { display: flex; justify-content: center; gap: 15px; margin: 30px 0; }
+        .icon { width: 60px; height: 60px; border-radius: 14px; display: flex; align-items: center; justify-content: center; transition: 0.3s; background: #111; border: 1px solid #444; text-decoration: none; }
+        .icon img, .icon svg { width: 35px; height: 35px; object-fit: contain; }
+        .icon:hover { transform: translateY(-5px); border-color: var(--gold); background: #000; }
 
-        #canvas { position: fixed; top: 0; left: 0; pointer-events: none; width: 100%; height: 100%; z-index: 5; }
+        .payment-card { max-width: 450px; margin: 20px auto; padding: 30px 20px; background: var(--card); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid #444; }
+        .btn { display: block; padding: 18px; margin: 15px 0; border-radius: 12px; font-weight: bold; text-decoration: none; color: black; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
+        .gold-btn { background: var(--gold); }
+        .green-btn { background: #1DB954; color: white; }
+        .outline-btn { border: 2px solid var(--gold); color: var(--gold); background: transparent; }
+        .btn:hover { opacity: 0.8; transform: scale(1.02); }
+
+        .warning-box { color: #ffffff; font-size: 0.85rem; font-weight: bold; margin-top: 25px; background: #b03a2e; padding: 15px; border-radius: 10px; border: 1px solid #641e16; }
+
+        /* Ticker */
+        .ticker-wrap { position: fixed; bottom: 0; width: 100%; background: var(--gold); color: black; padding: 10px 0; font-weight: 900; overflow: hidden; letter-spacing: 1px; }
+        .ticker { display: inline-block; white-space: nowrap; animation: marquee 20s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
 
-    <div id="lockScreen" class="lock">
-        <h1 style="color:var(--gold); letter-spacing: 2px;">ENTER WATCH ROOM</h1>
-        <p style="color:#888; margin-bottom: 30px;">Input your unique 48-hour password</p>
-        <input type="password" id="pw" placeholder="••••••••">
-        <br>
-        <button class="unlock-btn" onclick="openRoom()">UNLOCK NOW</button>
+    <div class="menu-btn" onclick="toggleNav()" id="mainBtn">☰</div>
+
+    <div id="sideNav" class="nav-overlay">
+        <div class="nav-content">
+            <h3>FOLLOW ME ON:</h3>
+            <a href="https://web.facebook.com/profile.php?id=61587208601046" target="_blank">Facebook</a>
+            <a href="https://www.instagram.com/dmdoublemofficial/" target="_blank">Instagram</a>
+            <a href="https://x.com/DMDoubleM" target="_blank">X (Twitter)</a>
+            <hr style="width:30%; border-color:#444; margin: 30px auto;">
+            <a href="watch-room.html" style="color:var(--gold);">Watch Before Release</a>
+        </div>
     </div>
 
-    <div id="celebration">
-        <h1 style="color:var(--gold); font-size: 2.2rem; margin:0;">CONGRATULATIONS!</h1>
-        <p style="font-size: 1.1rem; margin: 20px 0 40px; line-height: 1.6; color: #ccc;">
-            Respect for the 200 FRW. This helps me keep the music coming. <br>Enjoy the exclusives. <br><br>
-            <strong>Manasse</strong>
-        </p>
+    <section class="hero">
+        <img src="https://i.imgur.com/2zS4NhT.jpeg" class="profile-img">
+        <h1 style="letter-spacing: 4px; margin: 15px 0 5px;">DM DOUBLE M</h1>
+        <p style="color:var(--gold); font-weight:bold; letter-spacing:1px; margin:0;">MUSIC OFFICIAL</p>
+    </section>
+
+    <div class="icon-row">
+        <a href="https://www.youtube.com/@DMDoubleM" class="icon" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+        </a>
+        <a href="open.spotify.com/search/DM%20Double%20M" class="icon" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="Spotify">
+        </a>
+        <a href="https://soundcloud.com/dmdoublem" class="icon" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/145/145809.png" alt="SoundCloud">
+        </a>
+        <a href="https://audiomack.com/dmdoublem" class="icon" target="_blank">
+            <svg viewBox="0 0 24 24" fill="#FFA200" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.5 12.5v7h3v-7h-3zm-5-3v10h3v-10h-3zm-5 5v5h3v-5h-3zm-5 2v3h3v-3h-3zM12.5 4.5v3h3v-3h-3z"/>
+                <path d="M7.5 10.5v3h3v-3h-3zM2.5 14.5v3h3v-3h-3zM17.5 7.5v3h3v-3h-3zM22.5 11.5v8h-1v-8h1z"/>
+            </svg>
+        </a>
+    </div>
+
+    <div class="payment-card">
+        <h2 style="margin-top:0; color:var(--gold);">WATCH BEFORE RELEASE</h2>
         
-        <div class="player-box">
-            <h3 style="color:var(--gold); margin-top:0; letter-spacing: 1px;">EXCLUSIVE VIDEO: MY FUTURE</h3>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/S016hI77w-8?autoplay=0&rel=0" allowfullscreen></iframe>
-            </div>
-        </div>
+        <p style="font-size: 0.7rem; color: var(--gold); margin: 0; font-weight: bold;">STEP 1: PAY 200 FRW</p>
+        <a href="tel:*182*8*1*1437020*200#" class="btn gold-btn">Pay to 1437020</a>
 
-        <div class="player-box" style="padding: 10px;">
-            <p style="color:#666; font-size: 0.8rem; margin: 10px 0;">Audio Demo coming soon...</p>
-        </div>
+        <p style="font-size: 0.7rem; color: var(--gold); margin: 20px 0 0; font-weight: bold;">STEP 2: CLAIM PASSWORD</p>
+        <a href="https://wa.me/250785631144?text=Confirming%20my%20200FRW%20payment.%20My%20name%20is:" class="btn green-btn">WhatsApp Manasse</a>
 
-        <p style="margin-top: 50px;"><a href="index.html" style="color:var(--gold); text-decoration: none; font-size: 0.8rem;">← Back to Main Site</a></p>
+        <p style="font-size: 0.7rem; color: var(--gold); margin: 20px 0 0; font-weight: bold;">STEP 3: VIEW CONTENT</p>
+        <a href="watch-room.html" class="btn outline-btn">Enter Watch Room</a>
+
+        <div class="warning-box">Unique password sent within 24h. Valid for 48 hours only.</div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <div class="ticker-wrap">
+        <div class="ticker">
+            IGIHOZO Alicia   •   MUNGANYINKA Clarisse   •   HABYARIMANA J.Pierre   •   IGIHOZO Alicia   •   MUNGANYINKA Clarisse   •   HABYARIMANA J.Pierre   •   
+        </div>
+    </div>
+
     <script>
-        function openRoom() {
-            var code = document.getElementById("pw").value;
-            if(code.toLowerCase() === "healing2026") {
-                document.getElementById("lockScreen").style.display = "none";
-                document.getElementById("celebration").style.display = "block";
-                
-                // Celebration Confetti
-                var duration = 4 * 1000;
-                var end = Date.now() + duration;
-                (function frame() {
-                    confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#d4af37', '#ffffff'] });
-                    confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#d4af37', '#ffffff'] });
-                    if (Date.now() < end) { requestAnimationFrame(frame); }
-                }());
-            } else { alert("Incorrect Password"); }
+        function toggleNav() {
+            var s = document.getElementById("sideNav");
+            var b = document.getElementById("mainBtn");
+            if (s.style.width === "100%") { 
+                s.style.width = "0%"; 
+                b.innerHTML = "☰"; 
+            } else { 
+                s.style.width = "100%"; 
+                b.innerHTML = "✕"; 
+            }
         }
     </script>
 </body>
