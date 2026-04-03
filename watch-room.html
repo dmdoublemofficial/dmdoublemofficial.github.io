@@ -9,7 +9,6 @@
         :root { --gold: #d4af37; --bg: #2a2a2a; --card: #1a1a1a; }
         body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
         
-        /* Lock Screen */
         .lock { padding: 100px 20px; transition: 0.5s; }
         input { padding: 15px; border-radius: 10px; border: 1px solid #444; width: 250px; font-size: 1.2rem; text-align: center; background: #111; color: white; }
         .unlock-btn { background: var(--gold); padding: 15px 40px; border-radius: 10px; font-weight: bold; border: none; margin-top: 20px; cursor: pointer; color: black; text-transform: uppercase; }
@@ -17,7 +16,6 @@
         #celebration { display: none; padding: 40px 20px; animation: fadeIn 0.8s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* PLAYER BOX & PC FIXES */
         .player-box { 
             background: var(--card); 
             max-width: 750px; 
@@ -37,16 +35,30 @@
             overflow: hidden; 
             background: #000; 
             border: 2px solid var(--gold);
-            /* PC FIX: Prevents tiny clickable pixels at the rounded corners */
             -webkit-mask-image: -webkit-radial-gradient(white, black);
         }
 
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        /* THE TRIPLE SHIELD SYSTEM (Locked for PC & Mobile) */
-        .shield-top { position: absolute; top: 0; left: 0; width: 100%; height: 60px; z-index: 10; background: transparent; }
-        .shield-bottom { position: absolute; bottom: 0; left: 0; width: 100%; height: 50px; z-index: 10; background: transparent; }
-        .shield-right { position: absolute; top: 0; right: 0; width: 100px; height: 100%; z-index: 10; background: transparent; }
+        /* THE GAP-FILLER SHIELDS (Widened for PC precision) */
+        .shield-top { 
+            position: absolute; 
+            top: -5px; left: -5px; 
+            width: calc(100% + 10px); height: 80px; 
+            z-index: 10; background: transparent; 
+        }
+        .shield-bottom { 
+            position: absolute; 
+            bottom: -5px; left: -5px; 
+            width: calc(100% + 10px); height: 60px; 
+            z-index: 10; background: transparent; 
+        }
+        .shield-right { 
+            position: absolute; 
+            top: 0; right: -5px; 
+            width: 120px; height: 100%; 
+            z-index: 10; background: transparent; 
+        }
 
         .watermark { color: #ff4444; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 15px; text-transform: uppercase; border: 1px dashed #ff4444; padding: 8px; display: inline-block; border-radius: 5px; }
         .back-link { margin-top: 40px; display: block; color: var(--gold); text-decoration: none; font-size: 0.8rem; opacity: 0.6; }
@@ -101,7 +113,6 @@
             } else { alert("Access Denied: Incorrect Password"); }
         }
 
-        // Deep keyboard block for PC users
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i' || e.key === 'j')) {
                 e.preventDefault();
