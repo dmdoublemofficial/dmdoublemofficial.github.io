@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #d4af37; --bg: #2a2a2a; }
-        body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; text-align: center; margin: 0; }
+        body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; text-align: center; margin: 0; user-select: none; }
         
         .lock { padding: 100px 20px; }
         input { padding: 15px; border-radius: 10px; border: 1px solid #444; width: 250px; font-size: 1.2rem; text-align: center; background: #111; color: white; }
@@ -25,13 +25,26 @@
             background: #000; 
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         }
-        
-        /* The Shield starts INVISIBLE and OFF */
-        .total-shield { 
+
+        /* THE CUSTOM PLAY BUTTON OVERLAY */
+        #playOverlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .play-icon { font-size: 60px; color: var(--gold); border: 3px solid var(--gold); border-radius: 50%; width: 80px; height: 80px; line-height: 80px; }
+
+        /* THE TOTAL SHIELD (Locks everything after play) */
+        #totalShield { 
             position: absolute; 
             top: 0; left: 0; width: 100%; height: 100%; 
             z-index: 10; 
-            background: rgba(0,0,0,0); 
+            background: transparent;
             display: none; 
         }
 
@@ -39,7 +52,7 @@
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
         .security-note { color: #ff4444; font-size: 0.7rem; font-weight: bold; margin: 15px 0; text-transform: uppercase; }
-        .play-instruction { color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold; }
+        .play-instruction { color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -54,15 +67,19 @@
     <div id="celebration">
         <div class="security-note">PRIVATE PREVIEW: SHARING PROHIBITED</div>
         
-        <div class="player-container" id="playerParent">
-            <div class="total-shield" id="totalShield" onclick="togglePlay()"></div>
+        <div class="player-container">
+            <div id="playOverlay" onclick="startContent()">
+                <div class="play-icon">▶</div>
+            </div>
+
+            <div id="totalShield" onclick="togglePlay()"></div>
 
             <div class="video-wrapper">
-                <iframe id="yt-player" src="https://www.youtube.com/embed/08ChAGrMKhg?enablejsapi=1&rel=0&modestbranding=1&controls=1&disablekb=1" allowfullscreen></iframe>
+                <iframe id="yt-player" src="https://www.youtube.com/embed/08ChAGrMKhg?enablejsapi=1&rel=0&modestbranding=1&controls=0&disablekb=1&iv_load_policy=3" allowfullscreen></iframe>
             </div>
         </div>
 
-        <p id="instruction" class="play-instruction">Press Play to start exclusive content</p>
+        <p id="instruction" class="play-instruction">Click Play to begin the experience</p>
         <p style="font-size: 0.8rem; color: #888;">&copy; 2026 DM Double M Music</p>
     </div>
 
@@ -74,36 +91,38 @@
                 document.getElementById("lockScreen").style.display = "none";
                 document.getElementById("celebration").style.display = "block";
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#d4af37', '#ffffff'] });
-                
-                // Listen for the first click on the video area
-                document.getElementById("playerParent").addEventListener("click", activateSecurity, {once: true});
-            } else { 
-                alert("Access Denied"); 
-            }
-        }
-
-        function activateSecurity() {
-            // Once they click play, we turn on the invisible shield
-            document.getElementById("totalShield").style.display = "block";
-            document.getElementById("instruction").innerHTML = "Security Active: Tap to Play/Pause";
-            isPlaying = true;
+            } else { alert("Access Denied"); }
         }
 
         var isPlaying = false;
+
+        function startContent() {
+            var iframe = document.getElementById('yt-player');
+            // 1. Hide the Play button overlay
+            document.getElementById("playOverlay").style.display = "none";
+            // 2. Show the security shield
+            document.getElementById("totalShield").style.display = "block";
+            // 3. Command YouTube to play
+            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            document.getElementById("instruction").innerHTML = "Security Active: Tap anywhere to Pause/Play";
+            isPlaying = true;
+        }
+
         function togglePlay() {
             var iframe = document.getElementById('yt-player');
-            if (!isPlaying) {
-                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                isPlaying = true;
-            } else {
+            if (isPlaying) {
                 iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
                 isPlaying = false;
+            } else {
+                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                isPlaying = true;
             }
         }
 
-        // Block View Source keys
+        // Deep Security to block keyboard thieves
         document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i')) { e.preventDefault(); }
+            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i' || e.key === 'j')) { e.preventDefault(); }
+            if (e.key === 'F12') { e.preventDefault(); }
         });
     </script>
 </body>
