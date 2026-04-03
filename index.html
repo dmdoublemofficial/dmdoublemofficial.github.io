@@ -11,25 +11,27 @@
         
         /* Navigation Menu */
         .menu-btn { position: fixed; top: 20px; right: 20px; font-size: 35px; cursor: pointer; color: var(--gold); z-index: 1001; }
-        .nav-overlay { height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; right: 0; background-color: rgba(42,42,42, 0.98); overflow-x: hidden; transition: 0.5s; border-left: 2px solid var(--gold); }
-        .nav-content { position: relative; top: 15%; width: 100%; text-align: center; }
-        .nav-content a { padding: 15px; text-decoration: none; font-size: 1.5rem; color: var(--white); display: block; }
-        .nav-content h3 { color: var(--gold); margin-top: 30px; font-size: 0.9rem; letter-spacing: 2px; }
+        .nav-overlay { height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; right: 0; background-color: rgba(20,20,20, 0.98); overflow-x: hidden; transition: 0.5s; border-left: 2px solid var(--gold); }
+        .nav-content { position: relative; top: 10%; width: 100%; text-align: center; }
+        .nav-content a { padding: 12px; text-decoration: none; font-size: 1.3rem; color: var(--white); display: block; transition: 0.3s; }
+        .nav-content a:hover { color: var(--gold); }
+        .nav-content h3 { color: var(--gold); margin-top: 35px; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; }
 
         .hero { padding: 60px 20px; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://i.imgur.com/2zS4NhT.jpeg'); background-size: cover; background-position: center; }
         .profile-img { width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--gold); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
-        /* Professional Social Icons */
+        /* Social Icons */
         .icon-row { display: flex; justify-content: center; gap: 15px; margin: 30px 0; }
         .icon { width: 60px; height: 60px; border-radius: 14px; display: flex; align-items: center; justify-content: center; transition: 0.3s; background: #111; border: 1px solid #444; text-decoration: none; }
         .icon img, .icon svg { width: 35px; height: 35px; object-fit: contain; }
         .icon:hover { transform: translateY(-5px); border-color: var(--gold); background: #000; }
 
         .payment-card { max-width: 450px; margin: 20px auto; padding: 30px 20px; background: var(--card); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid #444; }
-        .btn { display: block; padding: 18px; margin: 15px 0; border-radius: 12px; font-weight: bold; text-decoration: none; color: black; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; }
+        .btn { display: block; padding: 18px; margin: 15px 0; border-radius: 12px; font-weight: bold; text-decoration: none; color: black; text-transform: uppercase; font-size: 0.85rem; transition: 0.3s; }
         .gold-btn { background: var(--gold); }
         .green-btn { background: #1DB954; color: white; }
         .outline-btn { border: 2px solid var(--gold); color: var(--gold); background: transparent; }
+        .coffee-btn { background: #6f4e37; color: white; border: 1px solid #8b5a2b; }
         .btn:hover { opacity: 0.8; transform: scale(1.02); }
 
         .warning-box { color: #ffffff; font-size: 0.85rem; font-weight: bold; margin-top: 25px; background: #b03a2e; padding: 15px; border-radius: 10px; border: 1px solid #641e16; }
@@ -46,12 +48,20 @@
 
     <div id="sideNav" class="nav-overlay">
         <div class="nav-content">
-            <h3>FOLLOW ME ON:</h3>
+            <h3>Want to connect? Follow on:</h3>
             <a href="https://web.facebook.com/profile.php?id=61587208601046" target="_blank">Facebook</a>
             <a href="https://www.instagram.com/dmdoublemofficial/" target="_blank">Instagram</a>
             <a href="https://x.com/DMDoubleM" target="_blank">X (Twitter)</a>
+            <a href="https://whatsapp.com/channel/0029VbCCrzbATRShtT2hcu0e" target="_blank" style="color: #25D366; font-weight: bold;">WhatsApp Channel</a>
+            
             <hr style="width:30%; border-color:#444; margin: 30px auto;">
-            <a href="watch-room.html" style="color:var(--gold);">Watch Before Release</a>
+            
+            <h3>Support the Artist</h3>
+            <a href="tel:*182*8*1*1437020*500#" style="background: #6f4e37; margin: 10px 40px; border-radius: 8px; color: white; font-size: 1rem;">☕ Buy Me a Coffee (500 FRW)</a>
+            
+            <hr style="width:30%; border-color:#444; margin: 30px auto;">
+            
+            <a href="watch-room.html" style="color:var(--gold); font-weight: bold;">Exclusive Watch Room</a>
         </div>
     </div>
 
@@ -65,7 +75,7 @@
         <a href="https://www.youtube.com/@DMDoubleM" class="icon" target="_blank">
             <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
         </a>
-        <a href="open.spotify.com/search/DM%20Double%20M" class="icon" target="_blank">
+        <a href="http://googleusercontent.com/spotify.com/2" class="icon" target="_blank">
             <img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="Spotify">
         </a>
         <a href="https://soundcloud.com/dmdoublem" class="icon" target="_blank">
@@ -81,22 +91,24 @@
 
     <div class="payment-card">
         <h2 style="margin-top:0; color:var(--gold);">WATCH BEFORE RELEASE</h2>
+        <p style="font-size: 0.75rem; color: #bbb;">Support the unreleased song "My Future"</p>
         
-        <p style="font-size: 0.7rem; color: var(--gold); margin: 0; font-weight: bold;">STEP 1: PAY 200 FRW</p>
-        <a href="tel:*182*8*1*1437020*200#" class="btn gold-btn">Pay to 1437020</a>
-
-        <p style="font-size: 0.7rem; color: var(--gold); margin: 20px 0 0; font-weight: bold;">STEP 2: CLAIM PASSWORD</p>
+        <a href="tel:*182*8*1*1437020*200#" class="btn gold-btn">Get Access Key (200 FRW)</a>
         <a href="https://wa.me/250785631144?text=Confirming%20my%20200FRW%20payment.%20My%20name%20is:" class="btn green-btn">WhatsApp Manasse</a>
-
-        <p style="font-size: 0.7rem; color: var(--gold); margin: 20px 0 0; font-weight: bold;">STEP 3: VIEW CONTENT</p>
         <a href="watch-room.html" class="btn outline-btn">Enter Watch Room</a>
-
-        <div class="warning-box">Unique password sent within 24h. Valid for 48 hours only.</div>
+        
+        <hr style="border-color: #444; margin: 25px 0;">
+        
+        <h2 style="color:var(--gold); margin-top: 0;">SUPPORT MY ART</h2>
+        <p style="font-size: 0.75rem; color: #bbb;">Love the music? Buy me a coffee!</p>
+        <a href="tel:*182*8*1*1437020*500#" class="btn coffee-btn">☕ Buy Me a Coffee (500 FRW)</a>
+        
+        <div class="warning-box">Exclusive Watch Room codes are sent within 24h of payment.</div>
     </div>
 
     <div class="ticker-wrap">
         <div class="ticker">
-            IGIHOZO Alicia   •   MUNGANYINKA Clarisse   •   HABYARIMANA J.Pierre   •   IGIHOZO Alicia   •   MUNGANYINKA Clarisse   •   HABYARIMANA J.Pierre   •   MUSHIMIYIMANA Manasse   •   
+            IGIHOZO Alicia   •   MUNGANYINKA Clarisse   •   HABYARIMANA J.Pierre   •   IGIHOZO Alicia   •   MUNGANYINKA Clarisse   •   HABYARIMANA J.Pierre   •   MUSHIMIYIMANA Manasse   •   
         </div>
     </div>
 
