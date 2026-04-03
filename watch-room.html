@@ -4,57 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DM DOUBLE M | Watch Room</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #121212; color: white; font-family: sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
-        .lock { padding: 100px 20px; }
-        input { padding: 15px; border-radius: 10px; border: none; width: 250px; font-size: 1.2rem; text-align: center; }
-        .btn { background: #d4af37; padding: 15px 40px; border-radius: 10px; font-weight: bold; border: none; margin-top: 20px; cursor: pointer; }
-        #celebration { display: none; padding: 40px 20px; position: relative; z-index: 10; }
+        :root { --gold: #d4af37; --bg: #2a2a2a; --card: #1a1a1a; }
+        body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
         
-        /* Confetti Canvas */
+        .lock { padding: 100px 20px; transition: 0.5s; }
+        input { padding: 15px; border-radius: 10px; border: 1px solid #444; width: 250px; font-size: 1.2rem; text-align: center; background: #111; color: white; }
+        .unlock-btn { background: var(--gold); padding: 15px 40px; border-radius: 10px; font-weight: bold; border: none; margin-top: 20px; cursor: pointer; color: black; text-transform: uppercase; }
+
+        #celebration { display: none; padding: 40px 20px; animation: fadeIn 0.8s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .player-box { background: var(--card); max-width: 750px; margin: 20px auto; padding: 25px; border-radius: 20px; border: 1px solid #333; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+        .watermark { color: #ff4444; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 15px; text-transform: uppercase; border: 1px dashed #ff4444; padding: 8px; display: inline-block; border-radius: 5px; }
+        
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; background: #000; border: 2px solid var(--gold); }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
         #canvas { position: fixed; top: 0; left: 0; pointer-events: none; width: 100%; height: 100%; z-index: 5; }
+        .back-link { margin-top: 40px; display: block; color: var(--gold); text-decoration: none; font-size: 0.8rem; opacity: 0.6; }
     </style>
 </head>
 <body>
     <canvas id="canvas"></canvas>
 
     <div id="lockScreen" class="lock">
-        <h1 style="color:#d4af37;">ENTER PASSWORD</h1>
-        <input type="password" id="pw" placeholder="Code here">
+        <h1 style="color:var(--gold); letter-spacing: 2px;">SECURE WATCH ROOM</h1>
+        <p style="color:#aaa; margin-bottom: 30px;">Authorized Access Only</p>
+        <input type="password" id="pw" placeholder="Enter Password">
         <br>
-        <button class="btn" onclick="openRoom()">UNLOCK</button>
+        <button class="unlock-btn" onclick="openRoom()">Unlock Content</button>
     </div>
 
     <div id="celebration">
-        <h1 style="color:#d4af37; font-size: 2.5rem;">CONGRATULATIONS!</h1>
-        <p style="font-size: 1.2rem; margin-bottom: 40px;">Respect for the 200 FRW. This helps me keep the music coming. Enjoy the exclusives. <br><br><b>Manasse</b></p>
+        <h1 style="color:var(--gold); font-size: 2rem; margin-bottom: 10px;">CONGRATULATIONS!</h1>
+        <p style="font-size: 1rem; color: #ccc; margin-bottom: 30px;">Respect for the 200 FRW. Enjoy the exclusive preview.<br><strong>Manasse</strong></p>
         
-        <div style="background:#1a1a1a; padding:30px; border-radius: 20px; border: 1px solid #333;">
-            <h3 style="color:#d4af37;">EXCLUSIVE MUSIC (AUDIO/VIDEO)</h3>
-            <p style="color:#666;">Players loading...</p>
+        <div class="player-box">
+            <div class="watermark">Property of DM Double M - Unauthorized Sharing Prohibited</div>
+            
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/08ChAGrMKhg" allowfullscreen></iframe>
+            </div>
+            
+            <p style="color:#666; font-size: 0.7rem; margin-top: 15px;">Official Release Tracking Enabled via YouTube Content ID</p>
         </div>
+
+        <a href="index.html" class="back-link">← Return to Homepage</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
         function openRoom() {
-            if(document.getElementById("pw").value === "healing2026") {
+            var input = document.getElementById("pw").value;
+            // The password is: healing2026
+            if(input.toLowerCase() === "healing2026") {
                 document.getElementById("lockScreen").style.display = "none";
                 document.getElementById("celebration").style.display = "block";
-                // Start Confetti Celebration
-                var duration = 5 * 1000;
-                var animationEnd = Date.now() + duration;
-                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-                function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-                var interval = setInterval(function() {
-                    var timeLeft = animationEnd - Date.now();
-                    if (timeLeft <= 0) { return clearInterval(interval); }
-                    var particleCount = 50 * (timeLeft / duration);
-                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-                }, 250);
-            } else { alert("Wrong Code"); }
+                
+                // Pop the "Admission Email" style confetti
+                var end = Date.now() + (3 * 1000);
+                var colors = ['#d4af37', '#ffffff', '#ff0000'];
+                (function frame() {
+                    confetti({ particleCount: 2, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
+                    confetti({ particleCount: 2, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else { 
+                alert("Access Denied: Incorrect Password"); 
+            }
         }
+
+        // Simple right-click disable to discourage "Save As" on images/video
+        document.addEventListener('contextmenu', event => event.preventDefault());
     </script>
 </body>
 </html>
