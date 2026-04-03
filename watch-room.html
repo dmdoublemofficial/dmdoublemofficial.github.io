@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DM DOUBLE M | Secure Room</title>
+    <title>DM DOUBLE M | PROTECTED</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #d4af37; --bg: #2a2a2a; }
-        body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; text-align: center; margin: 0; }
+        body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; text-align: center; margin: 0; user-select: none; -webkit-user-select: none; }
         
         .lock { padding: 100px 20px; }
         input { padding: 15px; border-radius: 10px; border: 1px solid #444; width: 250px; font-size: 1.2rem; text-align: center; background: #111; color: white; }
-        .unlock-btn { background: var(--gold); padding: 15px 40px; border-radius: 10px; font-weight: bold; border: none; margin-top: 20px; cursor: pointer; color: black; text-transform: uppercase; }
+        .unlock-btn { background: var(--gold); padding: 15px 40px; border-radius: 10px; font-weight: bold; border: none; margin-top: 20px; cursor: pointer; color: black; }
 
         #celebration { display: none; padding: 40px 20px; }
 
@@ -23,23 +23,21 @@
             border-radius: 15px; 
             overflow: hidden; 
             background: #000; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         }
 
-        /* THE TOTAL SHIELD: Starts GONE so the user can click PLAY */
-        #totalShield { 
+        /* THE PERMANENT WALL: This never disappears. It blocks ALL clicks to YouTube. */
+        .permanent-shield { 
             position: absolute; 
             top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 10; 
-            background: transparent;
-            display: none; 
+            z-index: 100; 
+            background: rgba(0,0,0,0); 
+            cursor: pointer;
         }
 
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; z-index: 1; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
-        .security-note { color: #ff4444; font-size: 0.7rem; font-weight: bold; margin: 15px 0; text-transform: uppercase; }
-        .play-instruction { color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold; }
+        .security-tag { color: #ff4444; font-size: 0.7rem; font-weight: bold; margin-bottom: 10px; text-transform: uppercase; border: 1px solid #ff4444; padding: 5px; display: inline-block; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -48,47 +46,50 @@
         <h1 style="color:var(--gold);">DM DOUBLE M | SECURE</h1>
         <input type="password" id="pw" placeholder="Enter Password">
         <br>
-        <button class="unlock-btn" onclick="onclick=openRoom()">UNLOCK ROOM</button>
+        <button class="unlock-btn" onclick="openRoom()">UNLOCK</button>
     </div>
 
     <div id="celebration">
-        <div class="security-note">PRIVATE PREVIEW: SHARING PROHIBITED</div>
+        <div class="security-tag">Property of DM Double M - Tracking Active</div>
         
-        <div class="player-container" id="secureBox">
-            <div id="totalShield"></div>
+        <div class="player-container">
+            <div class="permanent-shield" onclick="controlPlayer()"></div>
 
             <div class="video-wrapper">
-                <iframe id="yt-player" src="https://www.youtube.com/embed/08ChAGrMKhg?rel=0&modestbranding=1&controls=0&disablekb=1&iv_load_policy=3" allowfullscreen></iframe>
+                <iframe id="yt-player" src="https://www.youtube.com/embed/08ChAGrMKhg?enablejsapi=1&rel=0&modestbranding=1&controls=0&disablekb=1&showinfo=0&iv_load_policy=3" allowfullscreen></iframe>
             </div>
         </div>
 
-        <p id="instruction" class="play-instruction">Click the video to start</p>
-        <p style="font-size: 0.8rem; color: #888;">&copy; 2026 DM Double M Music</p>
+        <p style="color:var(--gold); font-size: 0.9rem; margin-top: 15px;">Tap the video to Play / Pause</p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
         function openRoom() {
-            var pass = document.getElementById("pw").value.toLowerCase();
-            if(pass === "healing2026") {
+            if(document.getElementById("pw").value.toLowerCase() === "healing2026") {
                 document.getElementById("lockScreen").style.display = "none";
                 document.getElementById("celebration").style.display = "block";
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#d4af37', '#ffffff'] });
-
-                // THE TRAP: The moment they click the video area, the shield drops
-                document.getElementById("secureBox").addEventListener("click", function() {
-                    setTimeout(function() {
-                        document.getElementById("totalShield").style.display = "block";
-                        document.getElementById("instruction").innerHTML = "Security Active: Content Protected";
-                    }, 1000); // Wait 1 second for the video to start, then lock it
-                });
-
-            } else { alert("Access Denied"); }
+            } else { alert("Wrong Password"); }
         }
 
-        // Block View Source keys
+        var isPlaying = false;
+        function controlPlayer() {
+            var iframe = document.getElementById('yt-player');
+            if (!isPlaying) {
+                // Command: Play
+                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                isPlaying = true;
+            } else {
+                // Command: Pause
+                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                isPlaying = false;
+            }
+        }
+
+        // Disable keyboard shortcuts for sharing/viewing code
         document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i')) { e.preventDefault(); }
+            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i' || e.key === 'j')) { e.preventDefault(); }
             if (e.key === 'F12') { e.preventDefault(); }
         });
     </script>
