@@ -10,7 +10,6 @@
         body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; text-align: center; margin: 0; }
         
         .lock { padding: 100px 20px; }
-        /* Notice: No more 'user-select:none' here so you can type */
         input { padding: 15px; border-radius: 10px; border: 1px solid #444; width: 250px; font-size: 1.2rem; text-align: center; background: #111; color: white; }
         .unlock-btn { background: var(--gold); padding: 15px 40px; border-radius: 10px; font-weight: bold; border: none; margin-top: 20px; cursor: pointer; color: black; text-transform: uppercase; }
 
@@ -27,7 +26,7 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         }
         
-        /* The Shield starts as display:none so it doesn't block the password box */
+        /* The Shield starts INVISIBLE and OFF */
         .total-shield { 
             position: absolute; 
             top: 0; left: 0; width: 100%; height: 100%; 
@@ -37,10 +36,10 @@
         }
 
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; z-index: 1; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; pointer-events: auto; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
         .security-note { color: #ff4444; font-size: 0.7rem; font-weight: bold; margin: 15px 0; text-transform: uppercase; }
-        .play-instruction { color: var(--gold); font-size: 0.8rem; margin-bottom: 10px; font-style: italic; }
+        .play-instruction { color: var(--gold); font-size: 0.9rem; margin-bottom: 10px; font-weight: bold; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -55,15 +54,15 @@
     <div id="celebration">
         <div class="security-note">PRIVATE PREVIEW: SHARING PROHIBITED</div>
         
-        <div class="player-container">
+        <div class="player-container" id="playerParent">
             <div class="total-shield" id="totalShield" onclick="togglePlay()"></div>
 
             <div class="video-wrapper">
-                <iframe id="yt-player" src="https://www.youtube.com/embed/08ChAGrMKhg?enablejsapi=1&rel=0&modestbranding=1&controls=0&disablekb=1&iv_load_policy=3" allowfullscreen></iframe>
+                <iframe id="yt-player" src="https://www.youtube.com/embed/08ChAGrMKhg?enablejsapi=1&rel=0&modestbranding=1&controls=1&disablekb=1" allowfullscreen></iframe>
             </div>
         </div>
 
-        <p class="play-instruction">Tap the video once to Play / Pause</p>
+        <p id="instruction" class="play-instruction">Press Play to start exclusive content</p>
         <p style="font-size: 0.8rem; color: #888;">&copy; 2026 DM Double M Music</p>
     </div>
 
@@ -74,13 +73,20 @@
             if(pass === "healing2026") {
                 document.getElementById("lockScreen").style.display = "none";
                 document.getElementById("celebration").style.display = "block";
-                // Show the shield only AFTER unlocking
-                document.getElementById("totalShield").style.display = "block";
-                
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#d4af37', '#ffffff'] });
+                
+                // Listen for the first click on the video area
+                document.getElementById("playerParent").addEventListener("click", activateSecurity, {once: true});
             } else { 
                 alert("Access Denied"); 
             }
+        }
+
+        function activateSecurity() {
+            // Once they click play, we turn on the invisible shield
+            document.getElementById("totalShield").style.display = "block";
+            document.getElementById("instruction").innerHTML = "Security Active: Tap to Play/Pause";
+            isPlaying = true;
         }
 
         var isPlaying = false;
@@ -95,14 +101,9 @@
             }
         }
 
-        // Blocking keys ONLY if they are trying to View Source or Save
+        // Block View Source keys
         document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i' || e.key === 'j')) {
-                e.preventDefault();
-            }
-            if (e.key === 'F12') {
-                e.preventDefault();
-            }
+            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i')) { e.preventDefault(); }
         });
     </script>
 </body>
