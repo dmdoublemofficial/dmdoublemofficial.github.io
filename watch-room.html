@@ -11,49 +11,75 @@
         
         .lock { padding: 100px 20px; }
         input { padding: 15px; border-radius: 10px; border: 1px solid #444; width: 250px; font-size: 1.2rem; text-align: center; background: #111; color: white; }
-        .unlock-btn { background: var(--gold); padding: 15px 40px; border-radius: 10px; font-weight: bold; border: none; margin-top: 20px; cursor: pointer; color: black; }
+        .unlock-btn { background: var(--gold); padding: 15px 40px; border-radius: 10px; font-weight: bold; border: none; margin-top: 20px; cursor: pointer; color: black; text-transform: uppercase; }
 
         #celebration { display: none; padding: 40px 20px; }
 
-        /* THE SECURITY SHIELD */
-        .player-container { position: relative; max-width: 750px; margin: 20px auto; border: 2px solid var(--gold); border-radius: 15px; overflow: hidden; background: #000; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+        /* THE MAXIMUM SECURITY CONTAINER */
+        .player-container { 
+            position: relative; 
+            max-width: 750px; 
+            margin: 20px auto; 
+            border: 2px solid var(--gold); 
+            border-radius: 15px; 
+            overflow: hidden; 
+            background: #000; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            /* This line stops the "Edge" clicking you noticed */
+            -webkit-mask-image: -webkit-radial-gradient(white, black); 
+        }
         
-        /* This transparent layer blocks clicks to the YouTube "Share" and "Watch Later" icons */
-        .shield { position: absolute; top: 0; left: 0; width: 100%; height: 50px; z-index: 10; background: transparent; }
-        .shield-bottom { position: absolute; bottom: 0; left: 0; width: 100%; height: 50px; z-index: 10; background: transparent; }
-        .shield-right { position: absolute; top: 0; right: 0; width: 80px; height: 100%; z-index: 10; background: transparent; }
+        /* ONE MASSIVE WALL: Blocks 100% of the player surface */
+        .total-shield { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 10; 
+            background: rgba(0,0,0,0); /* Invisible */
+            cursor: default;
+        }
 
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; z-index: 1; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
-        .watermark { color: #ff4444; font-size: 0.7rem; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; border: 1px dashed #ff4444; padding: 5px; display: inline-block; }
+        .security-note { color: #ff4444; font-size: 0.7rem; font-weight: bold; margin: 15px 0; text-transform: uppercase; }
+        .play-instruction { color: var(--gold); font-size: 0.8rem; margin-bottom: 10px; font-style: italic; }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div id="lockScreen" class="lock">
-        <h1 style="color:var(--gold);">SECURE ACCESS</h1>
-        <input type="password" id="pw" placeholder="Enter Code">
+<body oncontextmenu="return false;" onkeydown="return false;">
+
+    <div id="lockScreen" class="lock">
+        <h1 style="color:var(--gold);">DM DOUBLE M | SECURE</h1>
+        <input type="password" id="pw" placeholder="Enter Password">
         <br>
-        <button class="unlock-btn" onclick="openRoom()">UNLOCK</button>
+        <button class="unlock-btn" onclick="openRoom()">UNLOCK ROOM</button>
     </div>
 
     <div id="celebration">
-        <p style="font-size: 1rem; color: #ccc;">Exclusive Preview for Supporters<br><strong>Manasse</strong></p>
+        <div class="security-note">PRIVATE PREVIEW: SHARING PROHIBITED</div>
         
-        <div class="player-container">
-            <div class="shield"></div>
-            <div class="shield-bottom"></div>
-            <div class="shield-right"></div>
+        <div class="player-container" id="container">
+            <div class="total-shield" id="shield" onclick="playVideo()"></div>
 
             <div class="video-wrapper">
-                <iframe id="yt-player" src="https://www.youtube.com/embed/08ChAGrMKhg" allowfullscreen></iframe>
+                <iframe id="yt-player" src="https://www.youtube.com/embed/08ChAGrMKhg?enablejsapi=1&rel=0&modestbranding=1&controls=0&disablekb=1&iv_load_policy=3" allowfullscreen></iframe>
             </div>
         </div>
 
-        <div class="watermark">Restricted Content - Property of DM Double M</div>
+        <p class="play-instruction">Click the video player once to Play/Pause</p>
+        <p style="font-size: 0.8rem; color: #888;">&copy; 2026 DM Double M Music</p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
+        var player;
+        // This function connects to the YouTube API
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player');
+        }
+
         function openRoom() {
             if(document.getElementById("pw").value.toLowerCase() === "healing2026") {
                 document.getElementById("lockScreen").style.display = "none";
@@ -62,9 +88,22 @@
             } else { alert("Access Denied"); }
         }
 
-        // Block Keyboard Shortcuts for Saving/Copying
+        // Logic: When they click our "Shield", we tell the hidden YouTube video to Play
+        var isPlaying = false;
+        function playVideo() {
+            var iframe = document.getElementById('yt-player');
+            if (!isPlaying) {
+                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                isPlaying = true;
+            } else {
+                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                isPlaying = false;
+            }
+        }
+
+        // Deep Security: Blocks Inspect Element and F12
         document.onkeydown = function(e) {
-            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 123)) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
                 return false;
             }
         };
